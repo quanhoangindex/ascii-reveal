@@ -186,8 +186,8 @@ function Hero() {
             </div>
             <div className="hero-card">
                 <h1>
-                    Your skeleton loader <br />
-                    is boring us to death.
+                    No cap, <br />
+                    this effect goes hard.
                 </h1>
                 <div className="ctas">
                     <a className="btn btn-primary" href="#effects">
@@ -290,12 +290,19 @@ const MAIL = [
 function Inbox({ ready, variant }: { ready: boolean; variant: SkeletonVariant }) {
     return (
         <div className="gcard inbox">
-            <div className="inbox-head">
-                <p className="inbox-title">
-                    Inbox <span className="chip chip-accent">3 new</span>
-                </p>
-                <span className="label">Today</span>
-            </div>
+            {ready ? (
+                <div className="inbox-head">
+                    <p className="inbox-title">
+                        Inbox <span className="chip chip-accent">3 new</span>
+                    </p>
+                    <span className="label">Today</span>
+                </div>
+            ) : (
+                <div className="inbox-head sk-head">
+                    <AsciiSkeleton variant={variant} lines={1} widths={["12ch"]} seed={47} />
+                    <AsciiSkeleton variant={variant} lines={1} widths={["6ch"]} seed={48} />
+                </div>
+            )}
             <div className="rows">
                 {MAIL.map((m, i) => (
                     <div className={`row${i === 0 ? " active" : ""}`} key={m.name}>
@@ -319,7 +326,7 @@ function Inbox({ ready, variant }: { ready: boolean; variant: SkeletonVariant })
                                 <AsciiSkeleton variant={variant} lines={2} widths={["42%", "86%"]} seed={60 + i * 3} />
                             </div>
                         )}
-                        <span className={`dot${m.unread ? "" : " read"}`} aria-label={m.unread ? "Unread" : undefined} />
+                        <span className={`dot${!ready ? " sk" : m.unread ? "" : " read"}`} aria-label={ready && m.unread ? "Unread" : undefined} />
                     </div>
                 ))}
             </div>
@@ -334,79 +341,85 @@ const TILES = {
     cup: "images/home/mood-cup.webp",
     shop: "images/home/mood-shop.webp",
 };
-function OraCard() {
-    const w = useWake(2400);
+function Ora({ ready, variant }: { ready: boolean; variant: SkeletonVariant }) {
+    const sk = (props: Parameters<typeof AsciiSkeleton>[0]) => <AsciiSkeleton variant={variant} {...props} />;
+    const tile = (src: string, alt: string, seed: number, caption?: string) => (
+        <div className="tile">
+            {ready ? (
+                <>
+                    <img src={src} alt={alt} decoding="async" />
+                    {caption && <em>{caption}</em>}
+                </>
+            ) : (
+                sk({ rows: 14, className: "tile-sk", seed })
+            )}
+        </div>
+    );
     return (
-        <div
-            ref={w.ref}
-            className="gcard ora wake ora-card"
-            role="button"
-            tabIndex={0}
-            aria-label="AI assistant card. Press to replay the mascot loading effect"
-            onPointerEnter={(e) => e.pointerType === "mouse" && w.wake()}
-            onClick={w.wake}
-            onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    w.wake();
-                }
-            }}>
+        <div className="gcard ora">
             <div className="chat">
                 <div className="chat-head">
                     <div className="who">
-                        <img src="images/home/ora.png" alt="" />
-                        <div>
-                            <b>Ora</b>
-                            <small>assistant</small>
-                        </div>
+                        {ready ? <img src="images/home/ora.png" alt="" /> : <span className="who-sk">{sk({ rows: 3, width: 36, height: 36, circle: true, seed: 90 })}</span>}
+                        {ready ? (
+                            <div>
+                                <b>Ora</b>
+                                <small>assistant</small>
+                            </div>
+                        ) : (
+                            <div className="who-lines">{sk({ lines: 2, widths: ["4ch", "9ch"], seed: 91 })}</div>
+                        )}
                     </div>
-                    {w.ready ? (
+                    {ready ? (
                         <span className="chip chip-success">
                             <i /> Done in 2.4s
                         </span>
                     ) : (
-                        <span className="chip chip-warning">
-                            <i /> Thinking…
-                        </span>
+                        sk({ lines: 1, widths: ["13ch"], seed: 92, className: "chip-sk" })
                     )}
                 </div>
                 <div className="thread">
-                    <p className="bubble">Moodboard for most exciting effect with positive vibe pls</p>
+                    {ready ? (
+                        <p className="bubble">Moodboard for most exciting effect with positive vibe pls</p>
+                    ) : (
+                        <div className="bubble bubble-sk">{sk({ lines: 2, widths: ["100%", "62%"], seed: 93 })}</div>
+                    )}
                 </div>
                 <div className="ask" aria-hidden="true">
-                    Ask Ora anything…
-                    <span className="send">
-                        <Icon icon={ArrowRight02Icon} size={20} />
-                    </span>
+                    {ready ? "Ask Ora anything…" : sk({ lines: 1, widths: ["17ch"], seed: 94 })}
+                    {ready ? (
+                        <span className="send">
+                            <Icon icon={ArrowRight02Icon} size={20} />
+                        </span>
+                    ) : (
+                        sk({ rows: 3, width: 28, height: 28, circle: true, seed: 95 })
+                    )}
                 </div>
             </div>
             <div className="mood">
                 <div className="mood-head">
-                    Universal — moodboard
-                    <span className="label">4 images</span>
+                    {ready ? (
+                        <>
+                            Universal — moodboard
+                            <span className="label">4 images</span>
+                        </>
+                    ) : (
+                        <>
+                            {sk({ lines: 1, widths: ["21ch"], seed: 96 })}
+                            {sk({ lines: 1, widths: ["8ch"], seed: 97 })}
+                        </>
+                    )}
                 </div>
-                <AsciiReveal className="mood-reveal" loading={!w.ready} revealOnMount={false} lazy={false} preset="dither" mascot="images/home/ora.png" fallback={FALLBACK} onRevealComplete={w.done}>
-                    <div className="mood-grid">
-                        <div className="tile">
-                            <img src={TILES.latte} alt="Watercolour horses running through a golden field" />
-                            <em>latte_art.jpg</em>
-                        </div>
-                        <div className="mood-stack">
-                            <div className="tile">
-                                <img src={TILES.beans} alt="Double exposure of a profile and wild flowers" />
-                                <em>beans.jpg</em>
-                            </div>
-                            <div className="mood-pair">
-                                <div className="tile">
-                                    <img src={TILES.cup} alt="Blurred dancer in warm red light" />
-                                </div>
-                                <div className="tile">
-                                    <img src={TILES.shop} alt="Figure in soft pastel light with a lily" />
-                                </div>
-                            </div>
+                <div className="mood-grid">
+                    {tile(TILES.latte, "Watercolour horses running through a golden field", 98, "latte_art.jpg")}
+                    <div className="mood-stack">
+                        {tile(TILES.beans, "Double exposure of a profile and wild flowers", 99, "beans.jpg")}
+                        <div className="mood-pair">
+                            {tile(TILES.cup, "Blurred dancer in warm red light", 100)}
+                            {tile(TILES.shop, "Figure in soft pastel light with a lily", 101)}
                         </div>
                     </div>
-                </AsciiReveal>
+                </div>
             </div>
         </div>
     );
@@ -419,23 +432,25 @@ function Effects() {
                 <Head label="Effects" title={<>+10.000 aura<br />with the whole gang</>} sub="Two for waiting, two for showing off. Hover to wake them up." />
                 <div className="bento">
                     <div className="bento-row top">
-                        <WakeCard ms={1200} preset="decode" className="slot-profile" label="Profile card">
+                        <WakeCard ms={1200} preset="dither" className="slot-profile" label="Profile card">
                             {(ready) => <DemoProfile data={ready ? PROFILE : null} variant="dither" seed={7} />}
                         </WakeCard>
                         <div className="bento-col">
-                            <WakeCard ms={900} preset="terminal" className="slot-player" label="Music player card">
-                                {(ready) => <DemoPlayer ready={ready} variant="terminal" />}
+                            <WakeCard ms={900} preset="dither" className="slot-player" label="Music player card">
+                                {(ready) => <DemoPlayer ready={ready} variant="dither" />}
                             </WakeCard>
-                            <WakeCard ms={1100} preset="blueprint" className="slot-story" label="Customer story card">
-                                {(ready) => <DemoStory ready={ready} variant="braille" />}
+                            <WakeCard ms={1100} preset="dither" className="slot-story" label="Customer story card">
+                                {(ready) => <DemoStory ready={ready} variant="dither" />}
                             </WakeCard>
                         </div>
                     </div>
                     <div className="bento-row bottom">
-                        <WakeCard ms={1000} preset="decode" className="slot-inbox" label="Inbox card">
-                            {(ready) => <Inbox ready={ready} variant="scan" />}
+                        <WakeCard ms={1000} preset="dither" className="slot-inbox" label="Inbox card">
+                            {(ready) => <Inbox ready={ready} variant="dither" />}
                         </WakeCard>
-                        <OraCard />
+                        <WakeCard ms={2400} preset="dither" className="slot-ora" label="AI assistant card">
+                            {(ready) => <Ora ready={ready} variant="dither" />}
+                        </WakeCard>
                     </div>
                 </div>
             </div>
@@ -525,7 +540,6 @@ function ProductSkeleton({ variant }: { variant: SkeletonVariant }) {
 function Playground() {
     const [variant, setVariant] = useState<SkeletonVariant>("dither");
     const [preset, setPreset] = useState<PresetName>("decode");
-    const [speed, setSpeed] = useState(1);
     const [net, setNet] = useState<Net>("slow");
     const [run, setRun] = useState(0);
     const [ready, setReady] = useState(false);
@@ -534,7 +548,7 @@ function Playground() {
     useEffect(() => {
         setReady(false);
         setWaving(false);
-        const ms = NET_MS[net] / speed;
+        const ms = NET_MS[net];
         if (!isFinite(ms)) return;
         const id = window.setTimeout(() => {
             setReady(true);
@@ -570,7 +584,7 @@ function Playground() {
     return (
         <Band id="playground" label="Playground">
             <div className="inner">
-                <Head label="Playground" title="Poke it. It won’t bite." sub="Switch the effect, wave origin and speed — every card replays." />
+                <Head label="Playground" title="Poke it. It won’t bite." sub="Switch the skeleton, the reveal and the network. Every card replays." />
                 <div className="toolbar" role="group" aria-label="Animation controls">
                     <div className="tgroup">
                         <span className="label">Skeleton</span>
@@ -579,13 +593,6 @@ function Playground() {
                     <div className="tgroup">
                         <span className="label">Reveal</span>
                         <Seg value={preset} set={setPreset} options={RV_PRESETS} label="Reveal preset" />
-                    </div>
-                    <div className="tgroup speed">
-                        <label className="label" htmlFor="pg-speed">
-                            Speed
-                        </label>
-                        <input id="pg-speed" type="range" min={0.4} max={2} step={0.1} value={speed} onChange={(e) => setSpeed(+e.target.value)} onPointerUp={replay} onKeyUp={replay} />
-                        <output htmlFor="pg-speed">{speed.toFixed(1)}×</output>
                     </div>
                     <button type="button" className="btn btn-glass btn-sm" onClick={replay}>
                         <Icon icon={RefreshIcon} size={16} /> Replay <kbd>R</kbd>
@@ -609,7 +616,7 @@ function Playground() {
                     </div>
                     <div className="state">
                         <div className="live">
-                            <AsciiReveal loading={!ready} revealOnMount={false} lazy={false} preset={preset} speed={speed} fallback={FALLBACK} onRevealComplete={() => setWaving(false)}>
+                            <AsciiReveal loading={!ready} revealOnMount={false} lazy={false} preset={preset} fallback={FALLBACK} onRevealComplete={() => setWaving(false)}>
                                 {ready ? <Product /> : <ProductSkeleton variant={variant} />}
                             </AsciiReveal>
                             <span className={`wave-tag${waving ? " on" : ""}`}>reveal wave ↓</span>
