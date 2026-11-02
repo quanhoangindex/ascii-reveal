@@ -347,7 +347,7 @@ function MascotCard({
 }
 
 /* Skeleton vs ascii-reveal: same fake request, same timing, measured time-to-readable */
-const PROFILE = {
+export const PROFILE = {
     name: "Ada Lindqvist",
     role: "Visual artist · Stockholm",
     cover: "images/card-cover.png",
@@ -401,7 +401,7 @@ const MODES: Record<LoadMode, { tab: string; blurb: string; code: string }> = {
 type SkProps = Parameters<typeof AsciiSkeleton>[0];
 
 /** Big card: creator profile with cover art, avatar, stats and a button. */
-function DemoProfile({
+export function DemoProfile({
     data,
     variant,
     seed,
@@ -497,7 +497,7 @@ function DemoProfile({
 }
 
 /** Small card 1: a music player. Every visible part has a skeleton, including the progress bar and controls. */
-function DemoPlayer({
+export function DemoPlayer({
     ready,
     variant,
 }: {
@@ -599,7 +599,7 @@ function DemoPlayer({
 }
 
 /** Small card 2: a customer story. While loading, even the gradient background and the logo are skeletons. */
-function DemoStory({
+export function DemoStory({
     ready,
     variant,
 }: {

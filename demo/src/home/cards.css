@@ -1,0 +1,78 @@
+/* Demo cards (profile, player, story) shared with the classic demo page; ported from styles.css. */
+.slot { display: flex; min-width: 0; cursor: default; }
+.slot > *, .slot-fill > * { flex: 1; min-width: 0; }
+.slot-fill { display: flex; flex-direction: column; }
+.dcard { --cover: 112px; position: relative; overflow: hidden; border-radius: 20px; height: 100%;
+  background: var(--glass); border: 1px solid var(--glass-line); box-shadow: inset 0 1px 0 var(--glass-hi), 0 24px 48px -28px var(--glass-shadow);
+  backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); }
+
+/* Profile (big) */
+.slot-profile .dcard { --cover: 280px; display: flex; flex-direction: column; }
+.dc-cover { position: relative; height: var(--cover); overflow: hidden; flex: none; border-radius: 0 0 20px 20px; }
+.dc-cover img, .dc-fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0 !important; }
+.dc-fill.ars { --ars-radius: 0; }
+.dc-fill .ars-block { width: 100%; height: 100%; border-radius: 0; }
+.dc-body { position: relative; padding: 0 24px 24px; display: flex; flex-direction: column; gap: 18px; flex: 1; }
+.dc-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: -36px; margin-bottom: -4px; }
+.dc-avatar { flex: none; position: relative; width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; overflow: hidden;
+  font: 600 20px var(--sans); color: #141416; background: var(--bg); object-fit: cover; box-shadow: 0 0 0 4px var(--bg); }
+.dc-avatar-skel { background: var(--bg); color: var(--fg); }
+.dc-avatar-skel > .ars { position: absolute; inset: 0; }
+.dc-avatar-skel .ars-block { width: 100% !important; height: 100% !important; }
+.dc-id { min-width: 0; display: flex; flex-direction: column; }
+.dc-name { margin: 0; font: 600 20px/1.25 var(--sans); letter-spacing: -0.02em; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dc-role { margin: 3px 0 0; font: 13px/1.3 var(--sans); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dc-skel-id { font-size: 14px; }
+.dc-btn { flex: none; font: 600 13px/1 var(--sans); padding: 10px 16px; border-radius: 999px; background: var(--solid); color: var(--on-solid); }
+.dc-btn-sk { flex: none; --ars-radius: 999px; }
+.dc-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: auto 0 0; padding-top: 16px; border-top: 1px solid var(--glass-line); }
+.dc-stats > div { display: flex; flex-direction: column; min-width: 0; }
+.dc-stats dt { font: 12px/1.2 var(--sans); color: var(--muted); }
+.dc-stats dd { margin: 6px 0 0; font: 600 26px/1.1 var(--mono); letter-spacing: -0.03em; color: var(--fg); }
+.dc-skel-stat { font-size: 12px; }
+
+/* Now playing */
+.np { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 18px; padding: 18px; align-items: center; align-content: center; }
+.np-art { position: relative; width: 112px; height: 112px; border-radius: 14px; overflow: hidden; background: var(--sunken); box-shadow: inset 0 0 0 1px var(--glass-line); }
+.np-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.np-main { min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+.np-label { margin: 0; font: 500 10px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.np-id { min-height: 40px; display: flex; flex-direction: column; justify-content: center; }
+.np-title { margin: 0; font: 600 17px/1.2 var(--sans); letter-spacing: -0.01em; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.np-artist { margin: 2px 0 0; font: 13px/1.3 var(--sans); color: var(--muted); }
+.np-skel { font-size: 13px; }
+.np-bar { height: 4px; border-radius: 99px; background: var(--glass-strong); overflow: hidden; margin-top: 2px; }
+.np-bar span { display: block; width: 36%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #e9e0d6, #9c6c84); }
+.np-bar-sk { font-size: 9px; line-height: 1; margin-top: 2px; }
+.np-bar-sk .ars-line { line-height: 1; }
+.np-ic-sk { --ars-radius: 3px; }
+.np-ctrl { min-height: 34px; }
+.np-times { display: flex; justify-content: space-between; font: 10.5px/1 var(--mono); color: var(--muted); min-height: 12px; }
+.np-times .ars { font-size: 10px; }
+.np-ctrl { display: flex; justify-content: center; align-items: center; gap: 20px; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.np-play { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--solid); color: var(--on-solid); font-size: 10px; }
+
+/* Customer story on a bold gradient (always light text) */
+.dcard.story { padding: 22px; display: flex; flex-direction: column; gap: 16px; color: #fff; min-height: 260px; isolation: isolate; }
+.dcard.story:not(.is-loading) { border-color: rgba(255, 255, 255, 0.14); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 24px 48px -28px rgba(252, 26, 88, 0.6); }
+.story.is-loading { color: var(--fg); }
+.st-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; display: block; }
+.st-bg-sk { opacity: .35; }
+.st-bg-sk .ars-block { width: 100%; height: 100%; border-radius: 0; background: none; }
+.st-top { display: flex; align-items: center; gap: 12px; }
+.st-logo { flex: none; width: 32px; height: 32px; display: block; }
+.st-logo-sk { flex: none; --ars-radius: 8px; }
+.st-co { margin: 0; font: 600 14px/1.3 var(--sans); }
+.st-sub { margin: 2px 0 0; font: 12px/1.35 var(--sans); color: rgba(255, 255, 255, 0.72); }
+.st-skel-co { flex: 1; min-width: 0; font-size: 11px; }
+.st-quote { margin: auto 0 0; font: 500 20px/1.35 var(--sans); letter-spacing: -0.015em; text-wrap: balance; }
+.st-skel-quote { margin-top: auto; font-size: 17px; }
+.st-foot { display: flex; align-items: center; gap: 10px; min-height: 28px; flex-wrap: wrap; }
+.st-av { flex: none; width: 28px; height: 28px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3); }
+.st-by { font: 12px/1.3 var(--sans); color: rgba(255, 255, 255, 0.78); }
+.st-link { margin-left: auto; font: 12px/1 var(--sans); color: rgba(255, 255, 255, 0.88); text-decoration: underline; text-underline-offset: 3px; }
+.st-skel-by { flex: 1; font-size: 11px; }
+@media (max-width: 640px) {
+  .slot-profile .dcard { --cover: 180px; } .dc-body { padding: 0 18px 18px; } .dc-avatar { width: 60px; height: 60px; } .dc-stats dd { font-size: 20px; }
+  .np { grid-template-columns: 84px minmax(0, 1fr); gap: 14px; padding: 14px; } .np-art { width: 84px; height: 84px; }
+}
