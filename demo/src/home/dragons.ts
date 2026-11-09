@@ -67,7 +67,7 @@ export function createDragons(canvas: HTMLCanvasElement, opts: DragonsOptions = 
 
   const rgbVar = (cs, k) => cs.getPropertyValue('--rgb-' + k).split(',').map((v) => +v);
   function readColors() {
-    const cs = getComputedStyle(document.documentElement);
+    const cs = getComputedStyle(stage); // stage, so a scoped data-theme (docs preview) applies
     for (const k of ['bg', 'fg', 'skin', 'dot', 'wake', 'a1', 'a2', 'a3']) C[k] = rgbVar(cs, k);
     C.gridA = +cs.getPropertyValue('--grid-alpha') || .05;
     C.light = (C.bg[0] + C.bg[1] + C.bg[2]) / 3 > 128;
@@ -589,7 +589,7 @@ export function createDragons(canvas: HTMLCanvasElement, opts: DragonsOptions = 
   const mq = matchMedia('(prefers-color-scheme: dark)');
   mq.addEventListener('change', refresh);
   const mo = new MutationObserver(refresh);
-  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] });
+  mo.observe(document.documentElement, { attributes: true, subtree: true, attributeFilter: ['data-theme'] });
   const onVis = () => { visible = !document.hidden; last = performance.now(); };
   document.addEventListener('visibilitychange', onVis);
   const io = new IntersectionObserver((es) => { inView = es[0].isIntersecting; last = performance.now(); });

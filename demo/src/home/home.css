@@ -105,9 +105,7 @@ img { display: block; }
 .nav .rail::before { left: -4px; } .nav .rail::after { right: -4px; }
 .nav-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .logo { display: inline-flex; align-items: center; gap: 8px; font: 600 16px/24px var(--sans); color: var(--text-primary); }
-.mark { width: 24px; height: 24px; border-radius: var(--radius-sm); flex: none;
-  background: radial-gradient(circle at 30% 30%, rgba(255,179,122,1) 0, rgba(255,179,122,0) 60%), radial-gradient(circle at 75% 40%, rgba(176,77,255,1) 0, rgba(176,77,255,0) 65%),
-    radial-gradient(circle at 50% 85%, rgba(31,182,255,1) 0, rgba(31,182,255,0) 65%), #20123a; }
+.mark { width: 24px; height: 24px; flex: none; display: block; }
 .badge { padding: 4px 8px; border-radius: var(--radius-full); border: 1px solid var(--border-subtle); font: 500 12px/16px var(--mono); color: var(--text-secondary); }
 .nav-links { display: flex; align-items: center; gap: 4px; }
 .nav-link { display: inline-flex; align-items: center; gap: 4px; padding: 8px 12px; border-radius: var(--radius-full); font: 500 14px/20px var(--sans); color: var(--text-secondary); transition: color .15s, background-color .15s; }
@@ -270,6 +268,10 @@ img { display: block; }
 .banner { position: relative; min-height: 440px; padding: 56px; border-radius: var(--radius-2xl); border: 1px solid var(--border-default); background: var(--bg-page);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; overflow: hidden; }
 .banner .h2 { text-wrap: balance; }
+/* currents background: half-res pixel canvas under the copy */
+.banner-scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; image-rendering: pixelated; z-index: 0; }
+.banner > :not(.banner-scene) { position: relative; z-index: 1; }
+.banner .btn-outline { background: color-mix(in srgb, var(--bg-page) 70%, transparent); }
 .banner .ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
 /* ---------- footer ---------- */
@@ -354,3 +356,34 @@ img { display: block; }
 @media (max-width: 1180px) { .bento-row.bottom > .slot { height: 280px; } }
 @media (max-width: 640px) { .bento-row.bottom > .slot-ora { height: auto; } }
 .dot.sk { background: var(--skeleton-glyph); }
+
+/* ---------- overlay nav (homepage): clear over the hero, solid once scrolled ---------- */
+.nav { transition: background-color .25s ease, border-color .25s ease, -webkit-backdrop-filter .25s ease, backdrop-filter .25s ease; }
+.nav.nav-overlay + main > .hero { margin-top: -64px; height: 864px; }
+.nav.nav-overlay + main > .hero .hero-card { margin-top: 32px; }
+.nav.is-clear { background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.nav.is-clear .rail::before, .nav.is-clear .rail::after { opacity: 0; }
+.nav .rail::before, .nav .rail::after { transition: opacity .25s ease; }
+@media (max-width: 640px) { .nav.nav-overlay + main > .hero { height: 704px; } }
+
+/* ---------- theme menu ---------- */
+.theme { position: relative; }
+.theme-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 50; min-width: 168px; padding: 6px; border-radius: 14px; display: flex; flex-direction: column; gap: 2px;
+  background: color-mix(in srgb, var(--bg-page) 86%, transparent); border: 1px solid var(--border-default);
+  box-shadow: inset 0 1px 0 var(--effect-highlight), 0 18px 40px -18px var(--effect-shadow);
+  -webkit-backdrop-filter: blur(16px) saturate(140%); backdrop-filter: blur(16px) saturate(140%); animation: menu-in .14s ease-out; }
+.theme-menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 9px; background: none; cursor: pointer;
+  font: 500 14px/20px var(--sans); color: var(--text-secondary); text-align: left; }
+.theme-menu button span { flex: 1; }
+.theme-menu button:hover, .theme-menu button:focus-visible { background: var(--bg-surface-strong); color: var(--text-primary); outline: none; }
+.theme-menu button[aria-checked="true"] { color: var(--text-primary); }
+@keyframes menu-in { from { opacity: 0; transform: translateY(-4px); } }
+@media (prefers-reduced-motion: reduce) { .theme-menu { animation: none; } .nav { transition: none; } }
+
+/* ---------- footer: side rails run to the very bottom ---------- */
+.footer { padding-bottom: 0; }
+.footer .rail { padding-bottom: 128px; }
+
+/* no column lines over the hero: the clear header hides its rails too, they return once it turns solid */
+.nav .rail { transition: border-color .25s ease; }
+.nav.is-clear .rail { border-left-color: transparent; border-right-color: transparent; }
