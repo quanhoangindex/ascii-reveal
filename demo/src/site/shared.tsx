@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { createThumb, type ThumbHandle, type ThumbScene } from "./menuThumbs";
+import { createSignature } from "./signature";
 import {
     ArrowDown01Icon,
     ArrowUpRight01Icon,
@@ -433,8 +434,12 @@ export function Footer() {
                             ASCII loading &amp; motion effects for React.
                             <br />
                             Open source, MIT.
-                            <br />
-                            Made by Quan Hoang
+                        </p>
+                        <p className="f-credit">
+                            Designed &amp; built by{" "}
+                            <a href="https://github.com/quanhoangindex" target="_blank" rel="noreferrer">
+                                Quan Hoang
+                            </a>
                         </p>
                     </div>
                     <div className="f-cols">
@@ -456,7 +461,39 @@ export function Footer() {
                     </div>
                 </div>
             </div>
+            <Signature />
         </footer>
+    );
+}
+
+/** The name written by streamlines, cut in half by the bottom of the page. */
+function Signature() {
+    const stage = useRef<HTMLAnchorElement>(null);
+    const canvas = useRef<HTMLCanvasElement>(null);
+    useEffect(() => {
+        // align the name with the footer content: from the logo's left edge to the last column's right edge
+        const foot = stage.current!.closest("footer");
+        // (that is the footer's content box: on desktop the Project column ends exactly at its right edge,
+        //  on phones the columns stack, so the content box keeps the name full width)
+        const align = (): [number, number] | null => {
+            const inner = foot?.querySelector<HTMLElement>(".inner");
+            if (!inner) return null;
+            const r = inner.getBoundingClientRect(), cs = getComputedStyle(inner);
+            return [r.left + parseFloat(cs.paddingLeft), r.right - parseFloat(cs.paddingRight)];
+        };
+        const h = createSignature(canvas.current!, stage.current!, align);
+        return () => h.destroy();
+    }, []);
+    return (
+        <a
+            ref={stage}
+            className="f-sign"
+            href="https://github.com/quanhoangindex"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Quan Hoang on GitHub">
+            <canvas ref={canvas} aria-hidden="true" />
+        </a>
     );
 }
 

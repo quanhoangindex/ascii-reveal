@@ -245,3 +245,14 @@ button.nav-link { border: 0; background: none; cursor: pointer; }
   .doc-actions .install-sm { width: 100%; justify-content: space-between; }
 }
 @media (prefers-reduced-motion: reduce) { .picker-sheet { animation: none; } }
+
+/* ---------- footer credit + signature (Figma 250:2530) ---------- */
+.footer .rail { padding-bottom: 72px; }
+.f-credit { font: 500 11px/16px var(--mono) !important; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary) !important; margin-top: 8px; }
+.f-credit a { color: var(--text-primary); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, var(--text-primary) 45%, transparent); transition: text-decoration-color .2s; }
+.f-credit a:hover { text-decoration-color: var(--text-primary); }
+.f-sign { position: relative; display: block; height: 140px; overflow: hidden; cursor: crosshair; border-top: 1px solid var(--border-subtle); }
+.f-sign canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.f-sign:focus-visible { outline: 2px solid var(--border-focus, var(--text-primary)); outline-offset: -2px; }
+@media (max-width: 640px) { .footer .rail { padding-bottom: 48px; } }
